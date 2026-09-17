@@ -45,8 +45,6 @@ public class Fornecedor implements Serializable {
 	
 	public Fornecedor() {
 	}
-
-	//Getters and Setters
 	
 	public Long getId() {
 		return id;

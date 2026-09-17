@@ -46,12 +46,14 @@ public class Produto implements Serializable {
 	@JoinColumn(name = "marca_id")
 	private Marca marca;
 	
+	@ManyToOne
+	@JoinColumn(name = "categoria_id")
+	private Categoria categoria;
+	
 	public Produto() {
 	
 	}
-	
-	//getters and setters
-
+		
 	public Long getId() {
 		return id;
 	}
