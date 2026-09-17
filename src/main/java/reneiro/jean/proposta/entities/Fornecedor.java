@@ -2,6 +2,7 @@ package reneiro.jean.proposta.entities;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 
 import org.hibernate.validator.constraints.Length;
 
@@ -41,6 +42,94 @@ public class Fornecedor implements Serializable {
 	
 	@OneToMany(mappedBy = "fornecedor", cascade = CascadeType.ALL)
 	private List<Endereco> enderecos;
+	
+	public Fornecedor() {
+	}
+
+	//Getters and Setters
+	
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getNomeFantasia() {
+		return nomeFantasia;
+	}
+
+	public void setNomeFantasia(String nomeFantasia) {
+		this.nomeFantasia = nomeFantasia;
+	}
+
+	public String getNomeSocial() {
+		return nomeSocial;
+	}
+
+	public void setNomeSocial(String nomeSocial) {
+		this.nomeSocial = nomeSocial;
+	}
+
+	public String getCnpj() {
+		return cnpj;
+	}
+
+	public void setCnpj(String cnpj) {
+		this.cnpj = cnpj;
+	}
+
+	public String getTelefone() {
+		return telefone;
+	}
+
+	public void setTelefone(String telefone) {
+		this.telefone = telefone;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public List<Endereco> getEnderecos() {
+		return enderecos;
+	}
+
+	public void setEnderecos(List<Endereco> enderecos) {
+		this.enderecos = enderecos;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Fornecedor other = (Fornecedor) obj;
+		return Objects.equals(id, other.id);
+	}
+
+	@Override
+	public String toString() {
+		return "Fornecedor [id=" + id + ", nomeFantasia=" + nomeFantasia + ", nomeSocial=" + nomeSocial + ", cnpj="
+				+ cnpj + ", telefone=" + telefone + ", email=" + email + ", enderecos=" + enderecos + "]";
+	}
+	
+	
+	
+	
 	
 	
 }
