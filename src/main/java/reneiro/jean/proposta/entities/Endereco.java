@@ -42,6 +42,10 @@ public class Endereco implements Serializable {
     
     @OneToOne(mappedBy = "endereco")
     private Orgao orgao;
+    
+    @OneToOne
+	@JoinColumn(name = "fornecedor_id" )
+	private Fornecedor fornecedor;
 
 	public Endereco() {
 	}
@@ -103,6 +107,22 @@ public class Endereco implements Serializable {
 
 	public void setCidade(Cidade cidade) {
 		this.cidade = cidade;
+	}
+		
+	public Orgao getOrgao() {
+		return orgao;
+	}
+
+	public void setOrgao(Orgao orgao) {
+		this.orgao = orgao;
+	}
+
+	public Fornecedor getFornecedor() {
+		return fornecedor;
+	}
+
+	public void setFornecedor(Fornecedor fornecedor) {
+		this.fornecedor = fornecedor;
 	}
 
 	@Override
