@@ -4,6 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,8 +22,8 @@ public class CategoriaController {
 		this.categoriaService = categoriaService;
 	}	
 	
-	@RequestMapping("/salvar")
-	@PostMapping 
+	
+	@PostMapping("/salvar")
 	public ResponseEntity<Categoria> saveCategoria(@RequestBody Categoria categoria) {
 		Categoria savedCategoria = categoriaService.adicionar(categoria);
 		return ResponseEntity.ok(savedCategoria);
@@ -37,6 +38,18 @@ public class CategoriaController {
 	@GetMapping("/listar")
 	public ResponseEntity<?> listarCategorias() {
 		return ResponseEntity.ok(categoriaService.listar());
+	}
+	
+	@PutMapping("/{id}")
+	public ResponseEntity<?> atualizarCategoria(@PathVariable Long id, @RequestBody Categoria categoria) {
+		Categoria updatedCategoria = categoriaService.atualizar(id, categoria);
+		return ResponseEntity.ok().body(updatedCategoria);
+	}
+	
+	@GetMapping("/deletar/{id}")
+	public ResponseEntity<?> deletarCategoria(@PathVariable Long id) {
+		categoriaService.deletar(id);
+		return ResponseEntity.ok().build();
 	}
 	
 }
