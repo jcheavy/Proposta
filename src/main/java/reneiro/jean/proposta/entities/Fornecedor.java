@@ -31,10 +31,9 @@ public class Fornecedor implements Serializable {
 	private String nomeSocial;
 	
 	@Column(nullable = false,  unique = true, length = 15)
-	@Length(min = 15, max = 15, message = "O campo cnpj deve ter 15 caracteres")
 	private String cnpj;
 	
-	@Length(min = 15, max = 15, message = "O campo Email deve ter 15 caracteres")
+	@Length(min = 11, max = 15, message = "O campo Telefone deve ter 15 caracteres")
 	private String telefone;
 	
 	@Column( length = 150)	

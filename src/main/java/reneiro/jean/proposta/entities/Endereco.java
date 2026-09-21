@@ -13,40 +13,43 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 
 @Entity
-public class Endereco implements Serializable {	
-	
-    private static final long serialVersionUID = 1L;
+public class Endereco implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	private static final long serialVersionUID = 1L;
 
-    @Column(nullable = false, length = 200)
-    private String rua;
-    
-    @Column(nullable = false, length = 10)
-    private String numero;
-    
-    @Column(length = 200)
-    private String complemento;
-    
-    @Column(nullable = false, length = 200)
-    private String bairro;
-    
-    @Column(nullable = false, length = 10)
-    private String cep;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "cidade_id")
-    private Cidade cidade;
-    
-    @OneToOne(mappedBy = "endereco")
-    private Orgao orgao;
-    
-    
+	@Column(nullable = false, length = 200)
+	private String rua;
+
+	@Column(nullable = false, length = 10)
+	private String numero;
+
+	@Column(length = 200)
+	private String complemento;
+
+	@Column(nullable = false, length = 200)
+	private String bairro;
+
+	@Column(nullable = false, length = 10)
+	private String cep;
+
+	@ManyToOne
+	@JoinColumn(name = "cidade_id")
+	private Cidade cidade;
+
+	@OneToOne(mappedBy = "endereco")
+	private Orgao orgao;
+
+	@ManyToOne
+	@JoinColumn(name = "fornecedor_id")
+	private Fornecedor fornecedor;
+
 	public Endereco() {
 	}
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -102,7 +105,7 @@ public class Endereco implements Serializable {
 	public void setCidade(Cidade cidade) {
 		this.cidade = cidade;
 	}
-		
+
 	public Orgao getOrgao() {
 		return orgao;
 	}
@@ -110,10 +113,14 @@ public class Endereco implements Serializable {
 	public void setOrgao(Orgao orgao) {
 		this.orgao = orgao;
 	}
-	
-	@ManyToOne
-	@JoinColumn(name = "fornecedor_id", referencedColumnName = "id")
-	private Fornecedor fornecedor;
+
+	public Fornecedor getFornecedor() {
+		return fornecedor;
+	}
+
+	public void setFornecedor(Fornecedor fornecedor) {
+		this.fornecedor = fornecedor;
+	}
 
 	@Override
 	public int hashCode() {
@@ -137,8 +144,5 @@ public class Endereco implements Serializable {
 		return "Endereco [id=" + id + ", rua=" + rua + ", numero=" + numero + ", complemento=" + complemento
 				+ ", bairro=" + bairro + ", cep=" + cep + ", cidade=" + cidade + "]";
 	}
-	
-	
-    
-	
+
 }
