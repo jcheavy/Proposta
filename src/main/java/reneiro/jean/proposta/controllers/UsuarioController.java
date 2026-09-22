@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
 import reneiro.jean.proposta.dtos.UsuarioCreateDto;
 import reneiro.jean.proposta.dtos.UsuarioResponseDto;
 import reneiro.jean.proposta.dtos.UsuarioSenhaDto;
@@ -30,7 +31,7 @@ public class UsuarioController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<UsuarioResponseDto> criarUsuario(@RequestBody UsuarioCreateDto createDto) {
+	public ResponseEntity<UsuarioResponseDto> criarUsuario(@Valid @RequestBody UsuarioCreateDto createDto) {
 		Usuario usuarioSalvo = usuarioService.salvar(UsuarioMapper.mpaToUsuario(createDto));
 		return ResponseEntity.status(HttpStatus.CREATED).body(UsuarioMapper.toDto(usuarioSalvo));
 	}	
@@ -42,7 +43,7 @@ public class UsuarioController {
 	}	
 	
 	@PatchMapping("/{id}")
-	public ResponseEntity<UsuarioResponseDto> updateSenha(@PathVariable Long id, @RequestBody UsuarioSenhaDto usuarioSenhaDto) {
+	public ResponseEntity<UsuarioResponseDto> updateSenha(@PathVariable Long id, @Valid @RequestBody UsuarioSenhaDto usuarioSenhaDto) {
 		Usuario usuarioSalvo = usuarioService.editarSenha(id, usuarioSenhaDto.getSenhaAutal(), usuarioSenhaDto.getNovaSenha(),
 				 usuarioSenhaDto.getConfimaNovaSenha());
 		return ResponseEntity.ok(UsuarioMapper.toDto(usuarioSalvo));
