@@ -2,10 +2,13 @@ package reneiro.jean.proposta.services;
 
 import java.util.List;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import reneiro.jean.proposta.entities.Usuario;
+import reneiro.jean.proposta.exceptions.EntitiesNotFoundException;
+import reneiro.jean.proposta.exceptions.UsernameUniqueViolationException;
 import reneiro.jean.proposta.repositories.UsuarioRepository;
 
 @Service
@@ -19,13 +22,19 @@ public class UsuarioService {
 
 	@Transactional
 	public Usuario salvar(Usuario usuario) {
+		
+		try {
+			usuarioRepository.save(usuario);
+		} catch (DataIntegrityViolationException e) {
+			throw new UsernameUniqueViolationException(String.format("Username '%s' já cadastrado", usuario.getUsername()));
+		}
 		return usuarioRepository.save(usuario);
 	}
 
 	@Transactional(readOnly = true)
 	public Usuario buscarPorId(Long id) {
 		return usuarioRepository.findById(id)
-				.orElseThrow(() -> new RuntimeException("Usuário não encontrado com id: " + id));
+				.orElseThrow(() -> new EntitiesNotFoundException("Usuário não encontrado com id: " + id));
 	}
 
 	@Transactional
