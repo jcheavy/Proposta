@@ -3,10 +3,12 @@ package reneiro.jean.proposta.services;
 import java.util.List;
 
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import reneiro.jean.proposta.entities.Usuario;
+import reneiro.jean.proposta.enums.Role;
 import reneiro.jean.proposta.exceptions.EntitiesNotFoundException;
 import reneiro.jean.proposta.exceptions.UsernameUniqueViolationException;
 import reneiro.jean.proposta.repositories.UsuarioRepository;
@@ -15,15 +17,19 @@ import reneiro.jean.proposta.repositories.UsuarioRepository;
 public class UsuarioService {
 
 	private final UsuarioRepository usuarioRepository;
+	private final PasswordEncoder passwordEncoder;
+	
 
-	public UsuarioService(UsuarioRepository usuarioRepository) {
+	public UsuarioService(UsuarioRepository usuarioRepository,  PasswordEncoder passwordEncoder) {
 		this.usuarioRepository = usuarioRepository;
+		this.passwordEncoder =  passwordEncoder;
 	}
 
 	@Transactional
 	public Usuario salvar(Usuario usuario) {
 		
 		try {
+			usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
 			usuarioRepository.save(usuario);
 		} catch (DataIntegrityViolationException e) {
 			throw new UsernameUniqueViolationException(String.format("Username '%s' já cadastrado", usuario.getUsername()));
@@ -46,17 +52,29 @@ public class UsuarioService {
 		
 		Usuario usuarioSalvo = buscarPorId(id);
 		
-		if (!usuarioSalvo.getPassword().equals(senhaAtual)) {
+		if (!passwordEncoder.matches(senhaAtual, usuarioSalvo.getPassword())) {
 			throw new RuntimeException("Senha atual INCORRETA.");
 		}
 				
-		usuarioSalvo.setPassword(novaSenha);
+		usuarioSalvo.setPassword(passwordEncoder.encode(novaSenha));
 		return usuarioSalvo;
 	}
 
 	@Transactional(readOnly = true)
 	public List<Usuario> buscarTodos() {
 		return usuarioRepository.findAll();
+	}
+
+	@Transactional(readOnly = true)
+	public Usuario buscarPorUsername(String username) {
+		return usuarioRepository.findByUsername(username)
+				.orElseThrow(() -> new EntitiesNotFoundException("Usuário não encontrado com username: " + username));
+	}
+
+	@Transactional(readOnly = true)
+	public Role buscarRolePorUsuario(String username) {
+		
+		return usuarioRepository.findRoleByUsername(username);
 	}
 
 }
